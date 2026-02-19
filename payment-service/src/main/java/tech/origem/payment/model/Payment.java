@@ -1,18 +1,21 @@
 package tech.origem.payment.model;
 
-import jakarta.persistence.*;
-import lombok.*;
-import java.math.BigDecimal;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "payments")
-@Getter @Setter @NoArgsConstructor @AllArgsConstructor
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class Payment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
-    private BigDecimal amount;
+    private Double valor;
     private String status;
-    private String customerEmail;
 }

@@ -1,21 +1,13 @@
 package tech.origem.payment.service;
 
-import tech.origem.payment.model.Payment;
-import tech.origem.payment.repository.PaymentRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import java.util.Map;
 
+@Slf4j
 @Service
 public class PaymentService {
-    private final PaymentRepository repository;
-
-    public PaymentService(PaymentRepository repository) {
-        this.repository = repository;
-    }
-
-    @Transactional
-    public Payment createPayment(Payment payment) {
-        payment.setStatus("PENDING");
-        return repository.save(payment);
+    public void process(Map<String, Object> paymentData) {
+        log.info("⚙️ Processando lógica de negócio para o pagamento...");
     }
 }

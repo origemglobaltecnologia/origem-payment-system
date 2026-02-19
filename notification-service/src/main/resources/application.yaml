@@ -1,0 +1,18 @@
+server:
+  port: 8082
+
+spring:
+  application:
+    name: notification-service
+  rabbitmq:
+    host: jaragua.lmq.cloudamqp.com
+    port: 5672
+    username: eglojydb
+    password: YJAne6ylmzLLswXLoQfVeFFTwYlAUY2G
+    virtual-host: eglojydb
+
+logging:
+  level:
+    tech.origem.payment: DEBUG
+  pattern:
+    console: "%clr(%d{HH:mm:ss}){faint} %clr(%5p) %clr(---){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n"

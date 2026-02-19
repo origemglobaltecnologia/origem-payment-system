@@ -1,29 +1,50 @@
-# 🚀 Origem Payment System - Microservices
+# 💳 Payment Service
 
-Este repositório contém uma solução completa de pagamentos baseada em arquitetura de microserviços, focada em escalabilidade, resiliência e boas práticas de desenvolvimento (SOLID & Clean Code).
+O **Payment Service** é o núcleo de transações do sistema. Ele gerencia o estado dos pagamentos, persiste dados em um banco de dados relacional e notifica o ecossistema via mensagens assíncronas.
 
-## 🏗️ Arquitetura do Sistema
-O sistema é composto pelos seguintes serviços:
+## 🚀 Tecnologias
+* **Spring Boot 3 + Java 17**
+* **Spring Data JPA & H2 Database**: Persistência em arquivo local (`paymentdb.mv.db`).
+* **RabbitMQ (CloudAMQP)**: Mensageria assíncrona para atualizações de status.
+* **JUnit 5 & Mockito**: Testes unitários para garantir a lógica de negócio.
 
-* **API Gateway**: Centralizador de requisições e roteamento.
-* **Auth Service**: Gerenciamento de autenticação e autorização (Em breve).
-* **Payment Service**: Core business para processamento de transações.
-* **Notification Service**: Processamento de eventos e envio de notificações (Em breve).
+## 🏗️ Arquitetura e Portas
+Este serviço opera na porta **8081**. Todas as requisições externas devem preferencialmente passar pelo **API Gateway (8080)**.
 
 
-## 🛠️ Tecnologias Globais
-* **Linguagem:** Java 17
-* **Framework:** Spring Boot 3.x
-* **Comunicação:** REST (síncrona) e RabbitMQ (assíncrona - planejado)
-* **Banco de Dados:** H2 (Memória) para desenvolvimento
 
-## 🚦 Como Rodar o Ecossistema
-Para rodar o fluxo completo, os serviços devem ser iniciados na seguinte ordem:
-1.  **Payment Service** (Porta 8081)
-2.  **API Gateway** (Porta 8080)
+## 🛠️ Endpoints Disponíveis (via Gateway)
 
-## 📈 Roadmap de Desenvolvimento
-- [x] Payment Service Core & Tests
-- [x] API Gateway Routing
-- [ ] Notification Service (RabbitMQ Integration)
-- [ ] Auth Service (JWT)
+| Método | Endpoint | Função |
+| :--- | :--- | :--- |
+| **POST** | `/payments` | Cria um pagamento e envia para a nuvem. |
+| **GET** | `/payments` | Lista todos os registros do banco H2. |
+| **GET** | `/payments/{id}` | Consulta detalhada de uma transação. |
+| **PUT** | `/payments/{id}` | Atualiza o status e notifica o RabbitMQ. |
+
+## 🕹️ Gerenciamento de Processos (Scripts)
+Para facilitar o uso no Termux sem múltiplas abas, utilize os scripts na raiz:
+
+* **Iniciar**: `./start_all.sh` (Sobe as APIs em background e gera logs).
+* **Status**: `./status.sh` (Verifica se as portas 8080/8081 estão ouvindo).
+* **Desligar**: `./stop_all.sh` (Encerra os processos de forma limpa).
+
+## 🧪 Suítes de Teste
+1.  **Testes Unitários**:
+    ```bash
+    ./mvnw test
+    ```
+2.  **Testes de Integração (API)**:
+    ```bash
+    ./test_api.sh
+    ```
+
+## 📂 Dados e Logs
+* **Banco de Dados**: Localizado em `data/paymentdb.mv.db`.
+* **Logs**: Gerados em `payment.log` ao utilizar o script de inicialização.
+
+## 🛑 Troubleshooting
+Caso encontre o erro "Port already in use", execute:
+```bash
+fuser -k 8081/tcp
+```
