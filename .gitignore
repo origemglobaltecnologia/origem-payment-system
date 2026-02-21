@@ -1,24 +1,23 @@
-# Java & Maven
+# Maven
 target/
-*.class
 *.jar
 *.war
-*.ear
-
-# Maven Wrapper
-.mvn/wrapper/
-mvnw
-mvnw.cmd
-
-# IDEs
-.idea/
-.vscode/
-*.iml
-*.swp
-
-# OS
-.DS_Store
-Thumbs.db
+*.zip
+*.tar.gz
+*.rar
 
 # Logs
+logs/
 *.log
+
+# IDEs e Termux
+.idea/
+.vscode/
+.classpath
+.project
+.settings/
+*.iml
+.DS_Store
+
+# Spring Boot
+.mvn/wrapper/maven-wrapper.jar
