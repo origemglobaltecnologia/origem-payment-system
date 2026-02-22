@@ -17,5 +17,7 @@ public class Payment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Double valor;
+    private String descricao;
+    private String metodo;
     private String status;
 }

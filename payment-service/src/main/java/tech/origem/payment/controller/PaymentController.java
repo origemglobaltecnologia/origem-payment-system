@@ -33,12 +33,13 @@ public class PaymentController {
     }
 
     @PutMapping("/{id}")
-    public String updateStatus(@PathVariable Long id, @RequestBody String novoStatus) {
+    public String updateStatus(@PathVariable Long id, @RequestBody Payment paymentDados) {
         return repository.findById(id).map(p -> {
-            p.setStatus(novoStatus);
-            repository.save(p); // Atualiza no banco
-            publisher.publish(p); // Notifica a nuvem
-            return "Pagamento " + id + " atualizado para " + novoStatus;
+            // Aqui pegamos apenas o status do JSON enviado
+            p.setStatus(paymentDados.getStatus());
+            repository.save(p);
+            publisher.publish(p);
+            return "Pagamento " + id + " atualizado para " + p.getStatus();
         }).orElse("Erro: Pagamento não encontrado.");
     }
 }

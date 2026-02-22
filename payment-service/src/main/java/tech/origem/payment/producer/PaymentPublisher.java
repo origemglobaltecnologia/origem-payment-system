@@ -11,7 +11,7 @@ public class PaymentPublisher {
     private final RabbitTemplate rabbitTemplate;
 
     public void publish(Payment paymentData) {
-        // Envia o objeto inteiro para que outros serviços vejam o novo status
-        rabbitTemplate.convertAndSend("payment-exchange", "payment-routing-key", paymentData.toString());
+        // O RabbitTemplate converte o objeto para JSON automaticamente
+        rabbitTemplate.convertAndSend("payment-exchange", "payment-routing-key", paymentData);
     }
 }

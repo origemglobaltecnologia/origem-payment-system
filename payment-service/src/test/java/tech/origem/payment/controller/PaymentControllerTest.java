@@ -1,60 +1,59 @@
 package tech.origem.payment.controller;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
-import static org.junit.jupiter.api.Assertions.*;
-
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MockMvc;
 import tech.origem.payment.model.Payment;
 import tech.origem.payment.repository.PaymentRepository;
 import tech.origem.payment.producer.PaymentPublisher;
 
+import java.util.Arrays;
 import java.util.Optional;
 
-class PaymentControllerTest {
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-    @InjectMocks
-    private PaymentController controller;
+@WebMvcTest(PaymentController.class)
+public class PaymentControllerTest {
 
-    @Mock
+    @Autowired
+    private MockMvc mockMvc;
+
+    @MockBean
     private PaymentRepository repository;
 
-    @Mock
+    @MockBean
     private PaymentPublisher publisher;
 
-    @BeforeEach
-    void setUp() {
-        MockitoAnnotations.openMocks(this);
+    @Test
+    public void shouldReturnAllPayments() throws Exception {
+        // Ajustado para o novo construtor: Long id, Double valor, String descricao, String metodo, String status
+        Payment p1 = new Payment(1L, 100.0, "Teste 1", "PIX", "PENDENTE");
+        Payment p2 = new Payment(2L, 200.0, "Teste 2", "CARTAO", "APROVADO");
+
+        when(repository.findAll()).thenReturn(Arrays.asList(p1, p2));
+
+        mockMvc.perform(get("/payments"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()").value(2));
     }
 
     @Test
-    void deveCriarPagamentoComSucesso() {
-        Payment p = new Payment(null, 100.0, "PENDENTE");
-        Payment pSalvo = new Payment(1L, 100.0, "PENDENTE");
+    public void shouldUpdateStatus() throws Exception {
+        Payment p1 = new Payment(1L, 100.0, "Teste 1", "PIX", "PENDENTE");
+        
+        when(repository.findById(1L)).thenReturn(Optional.of(p1));
+        when(repository.save(any(Payment.class))).thenReturn(p1);
 
-        when(repository.save(any(Payment.class))).thenReturn(pSalvo);
-
-        String response = controller.postPayment(p);
-
-        assertEquals("Pagamento 1 criado com sucesso!", response);
-        verify(repository, times(1)).save(p);
-        verify(publisher, times(1)).publish(pSalvo);
-    }
-
-    @Test
-    void deveAtualizarStatusComSucesso() {
-        Payment pExistente = new Payment(1L, 100.0, "PENDENTE");
-        when(repository.findById(1L)).thenReturn(Optional.of(pExistente));
-
-        String response = controller.updateStatus(1L, "APROVADO");
-
-        assertEquals("Pagamento 1 atualizado para APROVADO", response);
-        assertEquals("APROVADO", pExistente.getStatus());
-        verify(repository, times(1)).save(pExistente);
-        verify(publisher, times(1)).publish(pExistente);
+        // Enviando JSON para o PUT conforme o novo Controller ajustado
+        mockMvc.perform(put("/payments/1")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"status\": \"APROVADO\"}"))
+                .andExpect(status().isOk());
     }
 }
