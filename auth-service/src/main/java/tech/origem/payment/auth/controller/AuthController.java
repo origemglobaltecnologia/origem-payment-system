@@ -26,15 +26,15 @@ public class AuthController {
     public ResponseEntity<?> login(@RequestBody LoginRequest request) {
         Optional<User> userOpt = userRepository.findByUsername(request.user());
 
-        // matches(senha_aberta, senha_criptografada)
         if (userOpt.isPresent() && passwordEncoder.matches(request.pass(), userOpt.get().getPassword())) {
             User user = userOpt.get();
-            String token = jwtService.generateToken(user.getUsername());
+            // Agora geramos o token com o objeto User completo
+            String token = jwtService.generateToken(user);
             
             AuthResponse response = new AuthResponse(
                 token,
                 "Bearer",
-                System.currentTimeMillis() + 3600000
+                System.currentTimeMillis() + 900000 // Refletindo os 15 min
             );
             
             return ResponseEntity.ok(response);
