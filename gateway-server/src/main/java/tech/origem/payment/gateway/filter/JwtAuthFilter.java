@@ -2,6 +2,8 @@ package tech.origem.payment.gateway.filter;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
@@ -15,6 +17,8 @@ import java.security.Key;
 
 @Component
 public class JwtAuthFilter extends AbstractGatewayFilterFactory<JwtAuthFilter.Config> {
+
+    private static final Logger log = LoggerFactory.getLogger(JwtAuthFilter.class);
 
     @Value("${jwt.secret}")
     private String secret;
@@ -33,9 +37,15 @@ public class JwtAuthFilter extends AbstractGatewayFilterFactory<JwtAuthFilter.Co
     @Override
     public GatewayFilter apply(Config config) {
         return (exchange, chain) -> {
+            String path = exchange.getRequest().getPath().value();
+            String method = exchange.getRequest().getMethod().name();
+            
+            log.info("Processando requisicao: {} {}", method, path);
+
             String authHeader = exchange.getRequest().getHeaders().getFirst(HttpHeaders.AUTHORIZATION);
 
             if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+                log.warn("Tentativa de acesso sem token ou formato invalido no path: {}", path);
                 throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Token ausente ou formato invalido");
             }
 
@@ -44,6 +54,7 @@ public class JwtAuthFilter extends AbstractGatewayFilterFactory<JwtAuthFilter.Co
                 Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
                 return chain.filter(exchange);
             } catch (Exception e) {
+                log.error("Token invalido ou expirado para o path: {}", path);
                 throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Token invalido ou expirado");
             }
         };
