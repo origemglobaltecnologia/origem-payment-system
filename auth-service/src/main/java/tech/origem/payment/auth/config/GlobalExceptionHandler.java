@@ -21,25 +21,23 @@ public class GlobalExceptionHandler {
             errors.put(error.getField(), error.getDefaultMessage())
         );
 
-        ErrorResponse error = new ErrorResponse(
+        return ResponseEntity.badRequest().body(new ErrorResponse(
             "Erro de Validação",
-            HttpStatus.BAD_REQUEST.value(),
-            "Um ou mais campos estão inválidos",
+            400,
+            "Campos inválidos",
             Instant.now(),
             errors
-        );
-        return ResponseEntity.badRequest().body(error);
+        ));
     }
 
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<ErrorResponse> handleGeneric(Exception ex) {
-        ErrorResponse error = new ErrorResponse(
-            "Erro Interno do Servidor",
-            HttpStatus.INTERNAL_SERVER_ERROR.value(),
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity<ErrorResponse> handleRuntime(RuntimeException ex) {
+        return ResponseEntity.status(500).body(new ErrorResponse(
+            "Erro de Execução",
+            500,
             ex.getMessage(),
             Instant.now(),
             null
-        );
-        return ResponseEntity.internalServerError().body(error);
+        ));
     }
 }
