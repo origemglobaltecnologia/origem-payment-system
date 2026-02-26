@@ -1,5 +1,6 @@
 package tech.origem.payment.auth.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,26 +24,26 @@ public class AuthController {
     private final PasswordEncoder passwordEncoder;
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginRequest request) {
+    public ResponseEntity<?> login(@Valid @RequestBody LoginRequest request) {
         Optional<User> userOpt = userRepository.findByUsername(request.user());
 
         if (userOpt.isPresent() && passwordEncoder.matches(request.pass(), userOpt.get().getPassword())) {
             User user = userOpt.get();
-            // Agora geramos o token com o objeto User completo
             String token = jwtService.generateToken(user);
             
             AuthResponse response = new AuthResponse(
                 token,
                 "Bearer",
-                System.currentTimeMillis() + 900000 // Refletindo os 15 min
+                System.currentTimeMillis() + 900000
             );
             
             return ResponseEntity.ok(response);
         }
 
         return ResponseEntity.status(401).body(Map.of(
-            "erro", "Credenciais Inválidas",
+            "title", "Não Autorizado",
             "status", 401,
+            "detail", "Credenciais Inválidas",
             "timestamp", System.currentTimeMillis()
         ));
     }
