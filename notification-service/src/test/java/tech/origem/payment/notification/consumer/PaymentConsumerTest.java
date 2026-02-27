@@ -1,25 +1,46 @@
 package tech.origem.payment.notification.consumer;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import tech.origem.payment.notification.dto.PaymentEventDTO;
+import tech.origem.payment.notification.service.NotificationProvider;
 
-@SpringBootTest
+import static org.mockito.Mockito.*;
+
+@ExtendWith(MockitoExtension.class)
 class PaymentConsumerTest {
 
-    @Autowired
+    @Mock
+    private NotificationProvider notificationProvider;
+
+    @InjectMocks
     private PaymentConsumer paymentConsumer;
 
     @Test
-    void testConsume() {
-        // Criando o DTO em vez de um Map para o teste passar
-        PaymentEventDTO event = new PaymentEventDTO();
-        event.setId(1L);
-        event.setStatus("APROVADO");
-        event.setValor(100.0);
-        event.setDescricao("Teste de DTO");
+    void deveProcessarEventoComSucesso() {
+        // GIVEN
+        PaymentEventDTO event = new PaymentEventDTO(1L, 100.0, "Teste", "APROVADO");
+        String correlationId = "test-uuid-123";
 
-        paymentConsumer.consume(event);
+        // WHEN
+        paymentConsumer.consume(event, correlationId);
+
+        // THEN
+        verify(notificationProvider, times(1)).send(event);
+    }
+
+    @Test
+    void deveIgnorarEventoSeStatusNaoForAprovado() {
+        // GIVEN
+        PaymentEventDTO event = new PaymentEventDTO(1L, 100.0, "Teste", "PENDENTE");
+        
+        // WHEN
+        paymentConsumer.consume(event, null);
+
+        // THEN
+        verify(notificationProvider, never()).send(any());
     }
 }
