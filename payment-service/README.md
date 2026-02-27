@@ -1,18 +1,31 @@
-# 💳 Payment Service (Concluído)
+# 💳 Payment Service (Produção)
 
-Este microsserviço faz parte do Ecossistema Origem. Ele gerencia o ciclo de vida dos pagamentos.
+Este microsserviço gerencia o ciclo de vida de pagamentos no Ecossistema Origem, utilizando arquitetura em camadas e mensageria orientada a eventos.
 
-## ✅ Funcionalidades Implementadas
-* **Persistência Local**: Banco H2 em `./data/paymentdb`.
-* **Mensageria**: Publicação no RabbitMQ para o tópico de notificações.
-* **Logs Centralizados**: Enviados para `../logs/` na raiz do ecossistema.
-* **Documentação**: Swagger UI disponível em `/swagger-ui.html`.
-* **Testes**: Suíte de integração com MockMVC e RabbitMock.
+## 🚀 Tecnologias
+* **Java 21 / Spring Boot 3.5.x**
+* **Persistence**: H2 Database (File Mode em `./data/paymentdb`)
+* **Messaging**: RabbitMQ (Topic Exchange)
+* **Observability**: MDC Correlation ID & SLF4J
 
-## 🛠️ Comandos Úteis
-* **Rodar Testes**: `./mvnw test`
-* **Rodar App**: `./mvnw spring-boot:run`
+## ✅ Funcionalidades Profissionais
+* **Correlation ID**: Todas as requisições recebem um `X-Correlation-ID` no header e nos logs para rastreamento ponta-a-ponta.
+* **Resiliência**: Declaração automática de filas e exchanges no startup.
+* **Global Exception Handling**: Respostas padronizadas para erros de validação e infraestrutura.
+* **Service Layer**: Lógica de negócio isolada com suporte a transações ACID.
 
-## 📂 Arquitetura de Arquivos Externa
+## 🛠️ Comandos
+* **Build**: `./mvnw clean install -DskipTests`
+* **Testes**: `./mvnw test`
+* **Execução**: `./mvnw spring-boot:run`
+
+## 📊 Observabilidade
+Os logs são gerados na raiz do ecossistema e incluem o ID de correlação:
+`tail -f ../logs/payment-service.log`
+
+Exemplo de log:
+`2026-02-27 09:45:00 [f47ac10b-...] INFO  tech.origem.payment.service.PaymentService - Processando novo pagamento...`
+
+## 📂 Estrutura de Pastas Externa
 * **Logs**: `../logs/payment-service.log`
 * **Database**: `./data/paymentdb.mv.db`
