@@ -17,6 +17,23 @@ spring:
           filters:
             - name: JwtAuthFilter
 
+        # Rota para expor os docs do Payment Service através do Gateway
+        - id: payment-docs
+          uri: http://localhost:8082
+          predicates:
+            - Path=/payment-docs/**
+          filters:
+            - RewritePath=/payment-docs/(?<path>.*), /\${path}
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    urls:
+      - name: Payment Service
+        url: /payment-docs/v3/api-docs
+      - name: Gateway Service
+        url: /v3/api-docs
+
 jwt:
   secret: ${JWT_SECRET:minha_chave_secreta_muito_longa_com_mais_de_32_caracteres}
 
