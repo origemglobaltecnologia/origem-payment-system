@@ -10,6 +10,14 @@ spring:
     username: eglojydb
     password: YJAne6ylmzLLswXLoQfVeFFTwYlAUY2G
     virtual-host: eglojydb
+    listener:
+      simple:
+        retry:
+          enabled: true
+          initial-interval: 3000ms
+          max-attempts: 3
+          multiplier: 2.0
+        default-requeue-rejected: false
 
 logging:
   file:
