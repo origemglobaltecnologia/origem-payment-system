@@ -5,11 +5,11 @@ spring:
   application:
     name: notification-service
   rabbitmq:
-    host: jaragua.lmq.cloudamqp.com
-    port: 5672
-    username: eglojydb
-    password: YJAne6ylmzLLswXLoQfVeFFTwYlAUY2G
-    virtual-host: eglojydb
+    host: ${RABBITMQ_HOST}
+    port: ${RABBITMQ_PORT}
+    username: ${RABBITMQ_USER}
+    password: ${RABBITMQ_PASS}
+    virtual-host: ${RABBITMQ_VHOST}
     listener:
       simple:
         retry:
@@ -19,18 +19,6 @@ spring:
           multiplier: 2.0
         default-requeue-rejected: false
 
-management:
-  endpoints:
-    web:
-      exposure:
-        include: health,info,metrics
-  endpoint:
-    health:
-      show-details: always
-
 logging:
   file:
     name: ../logs/notification-service.log
-  pattern:
-    console: "%d{yyyy-MM-dd HH:mm:ss} [%X{correlationId}] %-5level %logger{36} - %msg%n"
-    file: "%d{yyyy-MM-dd HH:mm:ss} [%X{correlationId}] [%thread] %-5level %logger{36} - %msg%n"

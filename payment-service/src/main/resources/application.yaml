@@ -1,16 +1,9 @@
 server:
   port: 8082
 
-logging:
-  file:
-    name: ../logs/payment-service.log
-  pattern:
-    console: "%d{yyyy-MM-dd HH:mm:ss} [%X{correlationId}] %-5level %logger{36} - %msg%n"
-    file: "%d{yyyy-MM-dd HH:mm:ss} [%X{correlationId}] [%thread] %-5level %logger{36} - %msg%n"
-
 spring:
   datasource:
-    url: jdbc:h2:file:./data/paymentdb;DB_CLOSE_ON_EXIT=FALSE;AUTO_RECONNECT=TRUE
+    url: jdbc:h2:file:${PAYMENT_DB_PATH};DB_CLOSE_ON_EXIT=FALSE;AUTO_RECONNECT=TRUE
     driverClassName: org.h2.Driver
     username: sa
     password:
@@ -18,11 +11,8 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: true
-    properties:
-      hibernate:
-        format_sql: true
   rabbitmq:
-    addresses: amqps://eglojydb:YJAne6ylmzLLswXLoQfVeFFTwYlAUY2G@jaragua.lmq.cloudamqp.com/eglojydb
+    addresses: ${RABBITMQ_URL}
 
 springdoc:
   swagger-ui:
