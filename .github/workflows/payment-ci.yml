@@ -1,3 +1,4 @@
+# Final fix for Termux syntax
 name: CI - Payment Service
 on:
   push:
