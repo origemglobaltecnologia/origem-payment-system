@@ -1,31 +1,29 @@
-# 💳 Payment Service (Produção)
+# 💳 Origem Payment System - Cloud
+Sistema de pagamentos baseado em microsserviços, projetado para alta escalabilidade e deploy automatizado.
 
-Este microsserviço gerencia o ciclo de vida de pagamentos no Ecossistema Origem, utilizando arquitetura em camadas e mensageria orientada a eventos.
+## 🚀 Status do CI/CD (GitHub Actions)
+| Serviço | Status do Build | Docker Hub |
+| :--- | :--- | :--- |
+| **Auth Service** | ![Auth CI](https://github.com/origemglobaltecnologia/origem-payment-system/actions/workflows/auth-ci.yml/badge.svg) | [Imagens](https://hub.docker.com/u/origemglobaltecnologia) |
+| **Payment Service** | ![Payment CI](https://github.com/origemglobaltecnologia/origem-payment-system/actions/workflows/payment-ci.yml/badge.svg) | [Imagens](https://hub.docker.com/u/origemglobaltecnologia) |
 
-## 🚀 Tecnologias
-* **Java 21 / Spring Boot 3.5.x**
-* **Persistence**: H2 Database (File Mode em `./data/paymentdb`)
-* **Messaging**: RabbitMQ (Topic Exchange)
-* **Observability**: MDC Correlation ID & SLF4J
+## 🏗️ Estrutura do Ecossistema
+Este repositório (Monorepo) contém os seguintes serviços:
+* **Gateway Server**: Porta 8080 (Ponto de entrada único).
+* **Auth Service**: Porta 8081 (Segurança e JWT).
+* **Payment Service**: Porta 8082 (Núcleo de transações).
+* **Notification Service**: Consumidor de eventos RabbitMQ.
 
-## ✅ Funcionalidades Profissionais
-* **Correlation ID**: Todas as requisições recebem um `X-Correlation-ID` no header e nos logs para rastreamento ponta-a-ponta.
-* **Resiliência**: Declaração automática de filas e exchanges no startup.
-* **Global Exception Handling**: Respostas padronizadas para erros de validação e infraestrutura.
-* **Service Layer**: Lógica de negócio isolada com suporte a transações ACID.
+## 🛠️ Tecnologias Principais
+* **Java 17/21 & Spring Boot 3**: Base das aplicações.
+* **RabbitMQ**: Mensageria assíncrona para notificações.
+* **Docker & GitHub Actions**: Pipeline automatizada de build e push.
 
-## 🛠️ Comandos
-* **Build**: `./mvnw clean install -DskipTests`
-* **Testes**: `./mvnw test`
-* **Execução**: `./mvnw spring-boot:run`
+## 🕹️ Como Rodar (Local - Termux)
+Utilize os scripts de automação na raiz:
+* **Iniciar**: `./start_all.sh`
+* **Status**: `./status.sh`
+* **Desligar**: `./stop_all.sh`
 
-## 📊 Observabilidade
-Os logs são gerados na raiz do ecossistema e incluem o ID de correlação:
-`tail -f ../logs/payment-service.log`
-
-Exemplo de log:
-`2026-02-27 09:45:00 [f47ac10b-...] INFO  tech.origem.payment.service.PaymentService - Processando novo pagamento...`
-
-## 📂 Estrutura de Pastas Externa
-* **Logs**: `../logs/payment-service.log`
-* **Database**: `./data/paymentdb.mv.db`
+---
+© 2026 Origem Global Tecnologia
