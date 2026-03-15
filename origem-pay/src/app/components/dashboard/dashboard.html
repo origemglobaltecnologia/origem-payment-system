@@ -1,0 +1,35 @@
+<div class="dashboard-container">
+  <header class="main-header">
+    <div class="logo">Origem Pay</div>
+    <nav>
+      <button class="btn-logout" routerLink="/login">Sair</button>
+    </nav>
+  </header>
+
+  <main class="content">
+    <section class="welcome-section">
+      <h1>Painel de Controle</h1>
+      <p>Bem-vindo ao sistema de pagamentos da Origem Global.</p>
+    </section>
+
+    <div class="stats-grid">
+      <div class="card card-blue">
+        <h3>Total Recebido</h3>
+        <p class="value">R$ 12.450,00</p>
+      </div>
+      <div class="card card-orange">
+        <h3>Pendentes</h3>
+        <p class="value">08</p>
+      </div>
+      <div class="card card-green">
+        <h3>Processados</h3>
+        <p class="value">24</p>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button class="btn-action" routerLink="/payments/new">+ Novo Pagamento</button>
+      <button class="btn-action secondary" routerLink="/payments">Ver Listagem</button>
+    </div>
+  </main>
+</div>

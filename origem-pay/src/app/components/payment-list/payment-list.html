@@ -1,0 +1,36 @@
+<header class="main-header">
+  <div class="logo">Origem Pay</div>
+  <button class="btn-logout" routerLink="/dashboard">Voltar</button>
+</header>
+
+<main class="content-wrapper">
+  <div class="list-container">
+    <div class="list-header">
+      <h2>Histórico de Pagamentos</h2>
+      <button class="btn-primary-sm" routerLink="/payments/new">+ Novo Pagamento</button>
+    </div>
+
+    <div class="table-card">
+      <table class="custom-table">
+        <thead>
+          <tr>
+            <th>Descrição</th>
+            <th>Valor</th>
+            <th>Status</th>
+            <th class="text-center">Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Consultoria Técnica Origem</td>
+            <td>R$ 1.500,00</td>
+            <td><span class="badge success">Pago</span></td>
+            <td class="text-center">
+              <button class="btn-outline-edit">Editar</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</main>

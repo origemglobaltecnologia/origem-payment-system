@@ -1,0 +1,79 @@
+.main-header {
+  background-color: var(--primary-color);
+  color: white;
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.logo {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.content {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.welcome-section h1 {
+  margin: 0;
+  color: var(--primary-color);
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.card {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  border-left: 5px solid #ccc;
+}
+
+.card-blue { border-left-color: var(--accent-color); }
+.card-orange { border-left-color: #f39c12; }
+.card-green { border-left-color: #27ae60; }
+
+.value {
+  font-size: 1.8rem;
+  font-weight: bold;
+  margin: 0.5rem 0 0;
+}
+
+.actions {
+  margin-top: 2.5rem;
+  display: flex;
+  gap: 1rem;
+}
+
+.btn-action {
+  padding: 0.8rem 1.5rem;
+  border: none;
+  border-radius: 4px;
+  background-color: var(--primary-color);
+  color: white;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.btn-action.secondary {
+  background-color: #7f8c8d;
+}
+
+.btn-logout {
+  background: transparent;
+  border: 1px solid white;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+}
