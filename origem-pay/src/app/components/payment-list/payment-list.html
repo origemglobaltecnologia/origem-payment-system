@@ -21,12 +21,22 @@
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>Consultoria Técnica Origem</td>
-            <td>R$ 1.500,00</td>
-            <td><span class="badge success">Pago</span></td>
+          <tr *ngFor="let p of service.payments()">
+            <td>{{ p.descricao }}</td>
+            <td>{{ p.valor | currency:'BRL' }}</td>
+            <td>
+              <span class="badge" [ngClass]="p.valor > 0 ? 'success' : 'warning'">
+                Ativo
+              </span>
+            </td>
             <td class="text-center">
-              <button class="btn-outline-edit">Editar</button>
+              <button class="btn-outline-edit">Visualizar</button>
+            </td>
+          </tr>
+          
+          <tr *ngIf="service.payments().length === 0">
+            <td colspan="4" style="text-align: center; padding: 20px;">
+              Nenhum pagamento encontrado no banco de dados.
             </td>
           </tr>
         </tbody>

@@ -2,18 +2,25 @@ server:
   port: 8082
 
 spring:
+  application:
+    name: payment-service
   datasource:
-    url: jdbc:h2:file:${PAYMENT_DB_PATH};DB_CLOSE_ON_EXIT=FALSE;AUTO_RECONNECT=TRUE
+    # Usando ./ para garantir que o H2 aceite o caminho relativo na pasta data
+    url: jdbc:h2:file:./data/paymentdb;DB_CLOSE_ON_EXIT=FALSE;AUTO_RECONNECT=TRUE
     driverClassName: org.h2.Driver
     username: sa
     password:
   jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
     hibernate:
       ddl-auto: update
     show-sql: true
   rabbitmq:
-    addresses: ${RABBITMQ_URL}
+    # Ajuste para a sua URL do CloudAMQP para evitar o erro de conexão que vimos antes
+    addresses: amqps://eglojydb:YJAne6ylmzLLswXLoQfVeFFTwYlAUY2G@jaragua.lmq.cloudamqp.com/eglojydb
 
 springdoc:
+  api-docs:
+    path: /v3/api-docs
   swagger-ui:
     path: /swagger-ui.html
