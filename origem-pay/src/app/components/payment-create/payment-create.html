@@ -10,28 +10,37 @@
       <p>Preencha os dados abaixo para o processamento.</p>
     </div>
 
-    <form class="custom-form">
+    <form class="custom-form" (ngSubmit)="onSubmit()" #paymentForm="ngForm">
       <div class="form-group">
         <label>Descrição</label>
-        <input type="text" placeholder="Ex: Manutenção de Servidores">
+        <input type="text" 
+               name="descricao" 
+               [(ngModel)]="novoPagamento.descricao" 
+               required 
+               placeholder="Ex: Manutenção de Servidores">
       </div>
 
       <div class="form-row">
         <div class="form-group flex-2">
           <label>Valor (R$)</label>
-          <input type="number" placeholder="0,00">
+          <input type="number" 
+                 name="valor" 
+                 [(ngModel)]="novoPagamento.valor" 
+                 required 
+                 placeholder="0,00">
         </div>
 
         <div class="form-group flex-1">
-          <label>Status Inicial</label>
-          <select>
-            <option value="PENDING">Pendente</option>
-            <option value="PAID">Pago</option>
+          <label>Método</label>
+          <select name="metodo" [(ngModel)]="novoPagamento.metodo">
+            <option value="PIX">PIX</option>
+            <option value="BOLETO">Boleto</option>
+            <option value="CARTAO">Cartão</option>
           </select>
         </div>
       </div>
 
-      <button type="button" class="btn-primary-lg" routerLink="/payments">
+      <button type="submit" class="btn-primary-lg" [disabled]="!paymentForm.valid">
         Salvar Pagamento
       </button>
       
