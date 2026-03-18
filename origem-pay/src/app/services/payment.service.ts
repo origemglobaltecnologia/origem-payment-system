@@ -6,7 +6,7 @@ import { tap } from 'rxjs';
 @Injectable({ providedIn: 'root' })
 export class PaymentService {
   private http = inject(HttpClient);
-  private readonly API_URL = 'http://localhost:8082/payments';
+	  private readonly API_URL = 'http://localhost:8080/payments';
   
   payments = signal<Payment[]>([]);
 
