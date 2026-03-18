@@ -21,3 +21,8 @@ logs/
 
 # Spring Boot
 .mvn/wrapper/maven-wrapper.jar
+
+# Infraestrutura Global
+database/
+*.mv.db
+*.trace.db
