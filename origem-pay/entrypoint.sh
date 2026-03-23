@@ -1,12 +1,7 @@
 #!/bin/sh
 
-# O 'executável' que escreve o env.js baseado no export do cluster
-envsubst < /usr/share/nginx/html/assets/env.template.js > /usr/share/nginx/html/assets/env.js
+# Substitui as variáveis no template e gera o env.js na raiz do Nginx
+envsubst '${API_URL} ${PRODUCTION}' < /usr/share/nginx/html/env.template.js > /usr/share/nginx/html/env.js
 
-echo "----------------------------------------------------"
-echo "Configuração de Runtime aplicada no Origem Pay!"
-echo "API_URL definida para: $API_URL"
-echo "----------------------------------------------------"
-
-# Inicia o Nginx
-nginx -g "daemon off;"
+# Inicia o Nginx (comando padrão da imagem)
+exec nginx -g 'daemon off;'

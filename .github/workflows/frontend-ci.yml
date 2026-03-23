@@ -23,9 +23,9 @@ jobs:
         working-directory: ./origem-pay
         run: |
           npm install
-          # Cria o env.js fake para o build não quebrar no CI
-          mkdir -p src/assets
-          echo "window.env = {};" > src/assets/env.js
+          # Cria o env.js na nova pasta 'public' para o build v17+
+          mkdir -p public
+          echo "window.env = {};" > public/env.js
           npm run build -- --configuration production
 
       - name: Login to Docker Hub
