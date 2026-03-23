@@ -11,9 +11,9 @@ import tech.origem.payment.service.PaymentService;
 import java.util.List;
 import java.util.Map;
 
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/payments")
-@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RequiredArgsConstructor
 public class PaymentController {
 
