@@ -4,6 +4,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 import tech.origem.payment.dto.PaymentRequest;
 import tech.origem.payment.model.Payment;
 import tech.origem.payment.service.PaymentService;
@@ -21,9 +22,9 @@ public class PaymentController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public String postPayment(@RequestBody @Valid PaymentRequest request) {
-        Payment salvo = service.criarPagamento(request);
-        return "Pagamento " + salvo.getId() + " criado com sucesso!";
+    public Payment postPayment(@RequestBody @Valid PaymentRequest request) {
+        // Retorna o objeto completo para o Angular receber um JSON válido
+        return service.criarPagamento(request);
     }
 
     @GetMapping
@@ -37,12 +38,12 @@ public class PaymentController {
     }
 
     @PutMapping("/{id}")
-    public String updateStatus(@PathVariable Long id, @RequestBody Map<String, String> payload) {
+    public Payment updateStatus(@PathVariable Long id, @RequestBody Map<String, String> payload) {
         String novoStatus = payload.get("status");
         if (novoStatus == null) {
-            return "Erro: Campo 'status' não informado no JSON.";
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Campo 'status' não informado no JSON.");
         }
-        Payment atualizado = service.atualizarStatus(id, novoStatus);
-        return "Pagamento " + atualizado.getId() + " atualizado para " + atualizado.getStatus();
+        // Retorna o objeto atualizado
+        return service.atualizarStatus(id, novoStatus);
     }
 }
