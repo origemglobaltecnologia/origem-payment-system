@@ -13,6 +13,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/payments")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RequiredArgsConstructor
 public class PaymentController {
 
