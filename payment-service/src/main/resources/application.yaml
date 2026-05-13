@@ -12,9 +12,9 @@ spring:
     name: payment-service
   datasource:
     url: ${DB_URL}
-    driverClassName: org.h2.Driver
-    username: ${DB_USER:sa}
-    password: ${DB_PASS:}
+    driverClassName: org.postgresql.Driver
+    username: ${DB_USER}
+    password: ${DB_PASS}
   jpa:
     hibernate:
       ddl-auto: update
@@ -22,6 +22,7 @@ spring:
     properties:
       hibernate:
         format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
   rabbitmq:
     addresses: ${RABBIT_URL}
 

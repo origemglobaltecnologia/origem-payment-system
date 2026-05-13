@@ -22,12 +22,11 @@ WORKDIR /app
 # Copia apenas o JAR do estágio anterior
 COPY --from=build /app/target/*.jar app.jar
 
-# Expõe a porta do Payment Service
-EXPOSE 8082
+# Expõe a porta do Payment Service (conforme setenv.sh)
+EXPOSE 8080
 
-# Cria volumes para persistência (Logs e Banco H2)
+# Cria volumes para persistência de Logs
 VOLUME /logs
-VOLUME /app/data
 
 # Comando para rodar a aplicação
 ENTRYPOINT ["java", "-jar", "app.jar"]

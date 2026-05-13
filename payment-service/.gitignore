@@ -32,9 +32,6 @@ build/
 ### VS Code ###
 .vscode/
 
-# Infra e Dados
-database/
-data/
-*.mv.db
-*.trace.db
+# Infra e Configurações Sensíveis
 setenv.sh
+.env
