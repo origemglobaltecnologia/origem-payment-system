@@ -3,9 +3,10 @@ services:
     image: origemglobaltecnologia/origem-payment:latest
     container_name: payment-service
     ports:
-      - "8080:8080"
+      - "8082:8082"
     environment:
-      - PORT=8080
+      - SERVER_PORT=8082
+      - SERVER_SERVLET_CONTEXT_PATH=/api
       - DB_URL=${DB_URL}
       - DB_USER=${DB_USER}
       - DB_PASS=${DB_PASS}
@@ -15,6 +16,8 @@ services:
   notification-service:
     image: origemglobaltecnologia/origem-notification:latest
     container_name: notification-service
+    ports:
+      - "8083:8083"
     environment:
       - SPRING_RABBITMQ_HOST=${SPRING_RABBITMQ_HOST}
       - SPRING_RABBITMQ_PORT=${SPRING_RABBITMQ_PORT}
@@ -23,4 +26,11 @@ services:
       - SPRING_RABBITMQ_VIRTUAL_HOST=${SPRING_RABBITMQ_VIRTUAL_HOST}
     volumes:
       - ./logs:/logs
+    restart: always
+
+  origem-pay:
+    image: origemglobaltecnologia/origem-pay:latest
+    container_name: origem-pay
+    ports:
+      - "4200:80"
     restart: always
